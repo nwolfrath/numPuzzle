@@ -1,5 +1,5 @@
 package myPuzzle;
-
+//@Author Nate Wolfrath
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -27,11 +27,10 @@ public class puzzleSolver {
         Integer blankFromBottom = 0;
         Integer i, j, currentValue;
         Boolean gridWidthOdd, inversionsEven, blankOddFromBottom;
-        gridWidthOdd = inversionsEven = blankOddFromBottom = false; //arbitrary
 
-        if (rows % 2 == 1) {
-            gridWidthOdd = true;
-        }
+
+        gridWidthOdd = (rows % 2 == 1);
+
         for (i = 0, j = 0; i < size - 1; i++) {
 
             currentValue = puzzle.get(j++);
@@ -39,8 +38,6 @@ public class puzzleSolver {
                 blankFromBottom = ((rows - 1) - (i / rows));
                 continue;
             }
-
-            blankOddFromBottom = (blankFromBottom % 2 == 0);
 
             tmp = j;
             thisCnt = 0;

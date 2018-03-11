@@ -1,6 +1,9 @@
 package myPuzzle;
+//@Author Nate Wolfrath
+
 import java.util.ArrayList;
-import java.util.stream.StreamSupport;
+import java.util.Comparator;
+
 
 public class Node {
     private ArrayList<Integer> myState; //State stored as a row major list of integers
@@ -28,10 +31,10 @@ public class Node {
         Integer ret = 0;
         Integer rows = (int) Math.sqrt(size);
         for (int i = 0; i < size; i++){
-            Integer rCorrect = i % rows;
-            Integer cCorrect = i / rows; //leverage integer division
-            Integer rCurrent = myState.get(i) % rows;
-            Integer cCurrent = myState.get(i) / rows; //again, integer division
+            Integer cCorrect = i % rows;
+            Integer rCorrect = i / rows; //leverage integer division
+            Integer cCurrent = myState.get(i) % rows;
+            Integer rCurrent = myState.get(i) / rows; //again, integer division
             ret += (Math.abs(rCorrect-rCurrent) + Math.abs(cCorrect - cCurrent));
         }
 
@@ -41,6 +44,8 @@ public class Node {
     public Integer getSize() {
         return size;
     }
+
+
 
     public Integer getManhattan() {
         return manhattan;
@@ -58,6 +63,32 @@ public class Node {
         }
 
     }
+
+    public ArrayList<Integer> getMyState() {
+        return myState;
+    }
+
+    public Boolean isEqual(Node n){
+        for (int i = 0; i < size; i++){
+            if (n.myState.get(i) - this.myState.get(i) != 0){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    static class NodeCompare implements Comparator<Node>{
+        @Override
+        public int compare(Node n1, Node n2){
+
+            if (n1.manhattan < n2.manhattan) {
+            return -1;
+        }
+
+        else return 1;
+        }
+    }
+
 }
 
 
