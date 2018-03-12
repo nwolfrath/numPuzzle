@@ -9,8 +9,16 @@ public class Frontier{
         frontier = new PriorityQueue<Node>(10000, new Node.NodeCompare()); //arbitrary size of 10k
     }
 
+    public Node pop(){
+        return frontier.poll();
+    }
+
     public Boolean add(Node n){
         return frontier.add(n);
+    }
+
+    public Boolean fEmpty(){
+        return frontier.isEmpty();
     }
 
     public Boolean inFrontier(Node n){

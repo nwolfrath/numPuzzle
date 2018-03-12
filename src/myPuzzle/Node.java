@@ -62,6 +62,8 @@ public class Node {
             add += 3;
         }
 
+        System.out.print("\n");
+
     }
 
     public ArrayList<Integer> getMyState() {
@@ -75,6 +77,16 @@ public class Node {
             }
         }
         return true;
+    }
+
+    public void rollback(Node n){
+        n.print();
+
+        while(n.parent != null){
+            n = n.parent;
+            n.print();
+        }
+
     }
 
     static class NodeCompare implements Comparator<Node>{

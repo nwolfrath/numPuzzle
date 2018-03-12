@@ -1,7 +1,11 @@
 package myPuzzle;
 //@Author Nate Wolfrath
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
+
 import java.util.ArrayList;
 import java.util.Collections;
+
+import static java.lang.System.exit;
 
 public class Agent {
     private Frontier f;
@@ -53,7 +57,7 @@ public class Agent {
         //Now for rows: first row, you can only go down
         if(rLoc == 0){
             ArrayList<Integer> next = state;
-            Collections.swap(next, loc, loc+3);
+            Collections.swap(next, loc, loc+rows);
             ret.add(new Node(next, n, n.getSize()));
         }
 
@@ -61,8 +65,8 @@ public class Agent {
         if((rLoc != 0) && (rLoc != (rows-1))){
             ArrayList<Integer> uNext,dNext;
             uNext = dNext = state;
-            Collections.swap(uNext, loc, loc-3);
-            Collections.swap(dNext, loc, loc+3);
+            Collections.swap(uNext, loc, loc-rows);
+            Collections.swap(dNext, loc, loc+rows);
             ret.add(new Node(uNext, n, n.getSize()));
             ret.add(new Node(dNext, n, n.getSize()));
         }
@@ -70,9 +74,33 @@ public class Agent {
         //final row can only go up
         if(rLoc == (rows-1)){
             ArrayList next = state;
-            Collections.swap(next, loc, loc-3);
+            Collections.swap(next, loc, loc-rows);
             ret.add(new Node(next, n, n.getSize()));
         }
         return ret;
+    }
+
+    public void greedySearch(Node start){
+        f.add(start);
+        Node nextState;
+
+        while(true){
+
+
+            if(f.fEmpty()){
+                System.out.print("No Solution :(");
+            }
+
+            nextState = f.pop();
+
+            if(nextState.isGoal()){
+                nextState.print();
+                exit(0);
+            }
+
+
+
+
+        }
     }
 }
