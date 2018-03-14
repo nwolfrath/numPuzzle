@@ -2,6 +2,7 @@ package myPuzzle;
 //@Author Nate Wolfrath
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 
 
@@ -59,7 +60,7 @@ public class Node {
                 System.out.print(myState.get(j + add));
             }
             System.out.print("\n");
-            add += 3;
+            add += rows;
         }
 
         System.out.print("\n");
@@ -79,14 +80,26 @@ public class Node {
         return true;
     }
 
-    public void rollback(Node n){
-        n.print();
-
+    public void rollback(){
+        ArrayList<Node> moveList = new ArrayList<>();
+        Node n = this;
+        moveList.add(n);
         while(n.parent != null){
             n = n.parent;
+            moveList.add(n);
+        }
+        Collections.reverse(moveList);
+        for (Node move : moveList) {
+            n = move;
             n.print();
         }
 
+    }
+
+    public void copyState(ArrayList list){
+        for (int i = 0; i < this.size; i++){
+            list.add(this.myState.get(i));
+        }
     }
 
     static class NodeCompare implements Comparator<Node>{

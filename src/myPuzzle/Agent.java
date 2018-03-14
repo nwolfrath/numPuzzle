@@ -1,9 +1,9 @@
 package myPuzzle;
 //@Author Nate Wolfrath
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.PriorityQueue;
 
 import static java.lang.System.exit;
 
@@ -11,8 +11,9 @@ public class Agent {
     private Frontier f;
     private ExploredSet exSet;
 
-    Agent(Node n){
-        f.add(n);
+    Agent(){
+        f = new Frontier();
+        exSet = new ExploredSet();
     }
 
     private ArrayList<Node> getNewStates(Node n){
@@ -34,14 +35,17 @@ public class Agent {
 
         //if blank is in the first column, you can move right
         if(cLoc == 0){
-            ArrayList<Integer> next = state;
+            ArrayList<Integer> next = new ArrayList<>();
+            n.copyState(next);
             Collections.swap(next, loc, loc+1);
             ret.add(new Node(next, n, n.getSize()));
         }
         //if black is a 'middle', you can move left or right
         if((cLoc != 0) && (cLoc != (rows-1))){
-            ArrayList<Integer> lNext,rNext;
-            lNext = rNext = state;
+            ArrayList<Integer> lNext = new ArrayList<>();
+            ArrayList<Integer> rNext = new ArrayList<>();
+            n.copyState(lNext);
+            n.copyState(rNext);
             Collections.swap(lNext, loc, loc-1);
             Collections.swap(rNext, loc, loc+1);
             ret.add(new Node(lNext, n, n.getSize()));
@@ -49,22 +53,26 @@ public class Agent {
         }
         //if blank is in the last column, you can go left
         if(cLoc == (rows -1)){
-            ArrayList<Integer> next = state;
+            ArrayList<Integer> next = new ArrayList<>();
+            n.copyState(next);
             Collections.swap(next, loc, loc-1);
             ret.add(new Node(next, n, n.getSize()));
         }
 
         //Now for rows: first row, you can only go down
         if(rLoc == 0){
-            ArrayList<Integer> next = state;
+            ArrayList<Integer> next = new ArrayList<>();
+            n.copyState(next);
             Collections.swap(next, loc, loc+rows);
             ret.add(new Node(next, n, n.getSize()));
         }
 
         //middle row(s) can go up or down
         if((rLoc != 0) && (rLoc != (rows-1))){
-            ArrayList<Integer> uNext,dNext;
-            uNext = dNext = state;
+            ArrayList<Integer> uNext = new ArrayList<>();
+            ArrayList<Integer> dNext = new ArrayList<>();
+            n.copyState(uNext);
+            n.copyState(dNext);
             Collections.swap(uNext, loc, loc-rows);
             Collections.swap(dNext, loc, loc+rows);
             ret.add(new Node(uNext, n, n.getSize()));
@@ -73,7 +81,8 @@ public class Agent {
 
         //final row can only go up
         if(rLoc == (rows-1)){
-            ArrayList next = state;
+            ArrayList<Integer> next = new ArrayList<>();
+            n.copyState(next);
             Collections.swap(next, loc, loc-rows);
             ret.add(new Node(next, n, n.getSize()));
         }
@@ -81,25 +90,35 @@ public class Agent {
     }
 
     public void greedySearch(Node start){
+
         f.add(start);
-        Node nextState;
 
         while(true){
 
 
             if(f.fEmpty()){
                 System.out.print("No Solution :(");
+                exit(7);
             }
 
-            nextState = f.pop();
+            Node nextState = f.pop();
+
 
             if(nextState.isGoal()){
-                nextState.print();
+                nextState.rollback();
                 exit(0);
             }
 
+            ArrayList <Node> neighbors = getNewStates(nextState);
+
+            for (Node neighbor : neighbors){
 
 
+
+                if (!exSet.inExSet(neighbor) && !f.inFrontier(neighbor)){
+                    f.add(neighbor);
+                }
+            } exSet.add(nextState);
 
         }
     }

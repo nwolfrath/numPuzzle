@@ -6,6 +6,10 @@ import java.util.ArrayList;
 public class ExploredSet {
     private ArrayList<Node> exSet;
 
+    ExploredSet() {
+        exSet = new ArrayList<Node>();
+    }
+
     public Boolean add(Node n){
         return exSet.add(n);
     }

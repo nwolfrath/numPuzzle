@@ -12,7 +12,9 @@ public class puzzleSolver {
         Integer size = Math.pow((new Integer(args[0]),2);*/
         ArrayList<Integer> nate = makePuz(9);
         Node me = new Node(nate,null, 9);
-        me.print();
+        Agent a = new Agent();
+        a.greedySearch(me);
+
     }
 
 
