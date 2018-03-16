@@ -3,20 +3,18 @@ package myPuzzle;
 import java.util.ArrayList;
 import java.util.Collections;
 
+//Rough Puzzle Solver for an 8 puzzle
+
 public class puzzleSolver {
 
     public static void main(String[] args){
-       /* if (args.length != 1){
-            System.out.print("Invalid argument number. Please use [n] to solve an n x n puzzle");
-        }
-        Integer size = Math.pow((new Integer(args[0]),2);*/
+
         ArrayList<Integer> nate = makePuz(9);
         Node me = new Node(nate,null, 9);
         Agent a = new Agent();
         a.greedySearch(me);
 
     }
-
 
 
 
